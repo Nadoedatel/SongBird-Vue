@@ -28,6 +28,8 @@ onMounted(async () => {
   }
 });
 provide('infoBird', infoBird); 
+let radnomImagesCat = ref("https://cataas.com/cat")
+provide('radnomImagesCat', radnomImagesCat); 
 </script>
 
 <template>

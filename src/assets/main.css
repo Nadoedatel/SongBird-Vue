@@ -4,3 +4,7 @@ body{
     background-color: #222222;
 }
 
+img {
+    max-height: 120px;
+    min-height: 120px;
+}
