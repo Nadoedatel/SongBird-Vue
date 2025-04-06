@@ -21,7 +21,8 @@ onMounted(async () => {
     const data = await response.json();
     console.log(data);
     generateRandom()
-    infoBird.value = data.recordings[randomNumber]; 
+    console.log(randomNumber.value)
+    infoBird.value = data.recordings[randomNumber.value]; 
   } catch (error) {
     console.error("Нихуя не работает");
   }
