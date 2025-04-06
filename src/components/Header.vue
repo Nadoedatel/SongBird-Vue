@@ -1,4 +1,4 @@
-<script>
+<script setup>
 </script>
 
 <template>
@@ -28,9 +28,6 @@
 </template>
 
 <style>
-* {
-    background-color: rgb(179, 236, 174);
-}
 .nav-item{
     display: flex;
     justify-content: space-around;
