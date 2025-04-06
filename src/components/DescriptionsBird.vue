@@ -1,9 +1,7 @@
 <script setup>
 import { inject } from 'vue';
 
-const infoBird = inject('infoBird'); // получим ref
-
-// Для доступа к значению используем .value (если передали ref)
+const infoBird = inject('infoBird'); 
 console.log(infoBird.value); 
 </script>
 
@@ -13,17 +11,15 @@ console.log(infoBird.value);
             <div>
                 <img src="" alt="Image-bird">
             </div>
-            <div>
+            <div v-if="infoBird">
                 <p>{{ infoBird.gen }}</p>
                 <hr>
                 <p>{{ infoBird.group }}</p>
                 <hr>
-                <div v-if="infoBird">
-                    <audio controls :src="infoBird.file"></audio>
-                </div>
-                <div v-else>
-                    <p>Аудио не загружено или произошла ошибка.</p>
-                </div>
+                <audio controls :src="infoBird.file"></audio>
+            </div>
+            <div v-else>
+                <p>Идет загрузка...</p>
             </div>
         </div>
         <div>
