@@ -24,7 +24,7 @@ onMounted(async () => {
     console.log(randomNumber.value)
     infoBird.value = data.recordings[randomNumber.value]; 
   } catch (error) {
-    console.error("Нихуя не работает");
+    console.error("Не работает API");
   }
 });
 provide('infoBird', infoBird); 
