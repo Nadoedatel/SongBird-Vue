@@ -3,33 +3,86 @@ import Header from '@/components/Header.vue'
 import CurrentIssue from './components/CurrentIssue.vue';
 import SectionResponseAndDescription from './components/SectionResponseAndDescription.vue';
 import MyBtn from './components/MyBtn.vue';
+
 import { onMounted, provide, ref } from 'vue';
 
-const URL_SONG_BIRD = "https://xeno-canto.org/api/2/recordings?query=cnt:brazil";
+const URL_SONG_BIRD = "https://xeno-canto.org/api/2/recordings?query=cnt:belarus";
+
+// Реактивные данные
 const infoBird = ref(null);
+const birdArr = ref([]);
+const randomImagesCat = ref("https://cataas.com/cat");
+const isLoading = ref(false);
+const error = ref(null);
 
-// Создаю рандоманое число что бы каждый раз была новая запись изначально
-const randomNumber = ref(0);
-const generateRandom = () => {
-  randomNumber.value = Math.floor(Math.random() * 500); // От 0 до 499
-};
+// Объявляем provide в setup() ДО onMounted
+provide('infoBird', infoBird);
+provide('birdArr', birdArr);
+provide('randomImagesCat', randomImagesCat);
 
-// Принятие API звуков птиц и provide на другие компоненты их
-onMounted(async () => {
+// Функции для работы с данными
+function getUniqueRandomIndex(max, usedIndices) {
+  let index;
+  do {
+    index = Math.floor(Math.random() * max);
+  } while (usedIndices.has(index));
+  return index;
+}
+
+function shuffleArray(array) {
+  return [...array].sort(() => Math.random() - 0.5);
+}
+
+async function loadBirdData() {
   try {
+    isLoading.value = true;
+    error.value = null;
+    
     const response = await fetch(URL_SONG_BIRD);
+    if (!response.ok) throw new Error("Ошибка API");
+    
     const data = await response.json();
-    console.log(data);
-    generateRandom()
-    console.log(randomNumber.value)
-    infoBird.value = data.recordings[randomNumber.value]; 
-  } catch (error) {
-    console.error("Не работает API");
+    const usedIndices = new Set();
+    
+    // Выбираем правильный ответ
+    const correctIndex = getUniqueRandomIndex(data.recordings.length, usedIndices);
+    usedIndices.add(correctIndex);
+    infoBird.value = data.recordings[correctIndex];
+    
+    // Выбираем 5 случайных записей
+    const randomIndices = [];
+    while (randomIndices.length < 5 && usedIndices.size < data.recordings.length) {
+      const index = getUniqueRandomIndex(data.recordings.length, usedIndices);
+      randomIndices.push(index);
+      usedIndices.add(index);
+    }
+    
+    // Формируем итоговый массив
+    const allIndices = shuffleArray([correctIndex, ...randomIndices]);
+    birdArr.value = allIndices.map(index => ({
+      ...data.recordings[index],
+      isCorrect: index === correctIndex
+    }));
+    
+  } catch (err) {
+    error.value = err.message;
+    console.error("Ошибка при загрузке данных:", err);
+  } finally {
+    isLoading.value = false;
   }
-});
-provide('infoBird', infoBird); 
-let radnomImagesCat = ref("https://cataas.com/cat")
-provide('radnomImagesCat', radnomImagesCat); 
+}
+
+// Счетчик правильных ответов
+
+let scoreCount = ref(0)
+const incrementScore = () => {
+  scoreCount.value++;
+  console.log('Текущий счет:', scoreCount.value);
+};
+provide('incrementScore', incrementScore)
+provide('scoreCount', scoreCount);
+// Загрузка данных при монтировании
+onMounted(loadBirdData);
 </script>
 
 <template>

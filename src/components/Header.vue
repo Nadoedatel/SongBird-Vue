@@ -1,9 +1,13 @@
 <script setup>
+import Score from './Score.vue';
 </script>
 
 <template>
     <div class="logo">
         <img src="../components/icons/2160688.png">
+    </div>
+    <div>
+        <Score></Score>
     </div>
     <nav class="nav-item">
         <li>
