@@ -14,6 +14,7 @@ const birdArr = ref([]);
 const randomImagesCat = ref("https://cataas.com/cat");
 const isLoading = ref(false);
 const error = ref(null);
+const scoreCount = ref(0)
 
 // Объявляем provide в setup() ДО onMounted
 provide('infoBird', infoBird);
@@ -44,6 +45,9 @@ async function loadBirdData() {
     const data = await response.json();
     const usedIndices = new Set();
     
+    // Из LocalStorage получаем значение пользователя
+    scoreCount.value = localStorage.getItem('Score')
+
     // Выбираем правильный ответ
     const correctIndex = getUniqueRandomIndex(data.recordings.length, usedIndices);
     usedIndices.add(correctIndex);
@@ -73,10 +77,9 @@ async function loadBirdData() {
 }
 
 // Счетчик правильных ответов
-
-let scoreCount = ref(0)
 const incrementScore = () => {
   scoreCount.value++;
+  localStorage.setItem("Score", scoreCount.value)
   console.log('Текущий счет:', scoreCount.value);
 };
 provide('incrementScore', incrementScore)
@@ -92,7 +95,7 @@ onMounted(loadBirdData);
   <main>
     <CurrentIssue></CurrentIssue>
     <SectionResponseAndDescription></SectionResponseAndDescription>
-    <MyBtn></MyBtn>
+    <MyBtn @click=""></MyBtn>
   </main>
 </template>
 

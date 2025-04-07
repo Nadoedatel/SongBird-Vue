@@ -22,7 +22,7 @@ const isTrueOrNot = (birdName) => {
     <div class='flex items-center border-[#383838] border-2 bg-[#303030] m-5 p-5 text-white'>
         <div v-if="birdArr">
             <div v-for="bird in birdArr" :key="bird.id"  @click="isTrueOrNot(bird)" class="flex items-center gap-5">
-                <label class="flex items-center space-x-3 cursor-pointer group">
+                <div class="flex items-center space-x-3 cursor-pointer">
                     <input class="absolute opacity-0 w-0 h-0" type="radio">
                     <div :id="bird.id" class="w-3 h-3 rounded-full flex items-center justify-center"
                     :class="{
@@ -31,8 +31,8 @@ const isTrueOrNot = (birdName) => {
                         'bg-[#d73010]': selectedBirdId === bird.id && bird.gen !== infoBird.gen
                         }"
                     </div>
-                </label>
-                <p>{{ bird.gen }}</p>
+                    <p>{{ bird.gen }}</p>
+                </div>
             </div>
         </div>
         <div v-else>

@@ -1,7 +1,7 @@
 <script setup>
 import { inject} from 'vue';
 
-const scoreCount = inject('scoreCount');
+const scoreCount = inject('scoreCount', 0);
 </script>
 
 <template>
