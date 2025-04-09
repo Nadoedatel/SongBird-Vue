@@ -120,7 +120,17 @@ async function loadBirdData() {
     
     // Из LocalStorage получаем значение пользователя
     scoreCount.value = localStorage.getItem('Score')
+    formationFinalArr(data, usedIndices)
+  } catch (err) {
+    error.value = err.message;
+    console.error("Ошибка при загрузке данных:", err);
+  } finally {
+    isLoading.value = false;
+  }
+}
 
+// Формирование конечного массива с рандомными ответами и верным
+const formationFinalArr = (data, usedIndices) => {
     // Выбираем правильный ответ
     const correctIndex = getUniqueRandomIndex(data.recordings.length, usedIndices);
     usedIndices.add(correctIndex);
@@ -140,13 +150,8 @@ async function loadBirdData() {
       ...data.recordings[index],
       isCorrect: index === correctIndex
     }));
-  } catch (err) {
-    error.value = err.message;
-    console.error("Ошибка при загрузке данных:", err);
-  } finally {
-    isLoading.value = false;
-  }
 }
+
 
 // Счетчик правильных ответов
 const incrementScore = () => {
