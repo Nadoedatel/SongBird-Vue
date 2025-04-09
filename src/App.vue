@@ -6,7 +6,7 @@ import MyBtn from './components/MyBtn.vue';
 
 import { onMounted, provide, ref } from 'vue';
 
-const URL_SONG_BIRD = "https://xeno-canto.org/api/2/recordings?query=cnt:belarus";
+const URL_SONG_BIRD = "https://xeno-canto.org/api/2/recordings?query=cnt:brazil";
 
 // Реактивные данные
 const infoBird = ref(null);
@@ -93,7 +93,7 @@ const scoreCount = ref(0)
 provide('infoBird', infoBird);
 provide('birdArr', birdArr);
 provide('randomImagesCat', randomImagesCat);
-
+provide('isLoading', isLoading)
 // Функции для работы с данными
 function getUniqueRandomIndex(max, usedIndices) {
   let index;

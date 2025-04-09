@@ -1,18 +1,23 @@
 <script setup>
-import { ref } from 'vue';
+import { inject, ref, watch } from 'vue';
 
 
 const isCooldown = ref(false);
+const isLoading = inject('isLoading')
+
+watch(isLoading, () => {
+  console.log(isLoading.value);
+  handleNextLevel()
+});
 
 const handleNextLevel = () => {
-  if (isCooldown.value) return;
-  
-  isCooldown.value = true;
-  
-  // Автоматическая разблокировка через 2 секунды
-  setTimeout(() => {
+  if (isLoading.value) {
+    console.log("Кнопко не доступна");
+    isCooldown.value = true;
+  } else {
+    console.log("Кнопко доступна");
     isCooldown.value = false;
-  }, 4000);
+  }
 };
 
 </script>
